@@ -1,0 +1,54 @@
+﻿@using MyBookLibrary.Models
+@model List<MyBookLibrary.Models.Book>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style type="text/css">
+    .book-gallery {
+        background: #0c0c0c;
+        height: 500px;
+        text-align: center;
+        vertical-align: middle;
+        display: flex;
+        align-content: center;
+        justify-content: space-around;
+        overflow-x: hidden;
+    }
+    .library {    
+        margin: auto 0;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
+<main class="container-fluid">
+    <div class="book-gallery dragscroll">
+    @foreach (Book book in Model)
+    {
+        <div class="library">
+            <a class="js-data-modal-load" data-toggle="modal" data-target="#bookModal" data-isbn="@book.Isbn"><img src="@book.Image" class="library-gallery-book-display" /></a>                        
+        </div>
+    }
+    <div class="modal fade" id="bookModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" target="_blank" type="button" class="btn btn-default more-info" data-dismiss="modal">More info</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <section class="pull-right">
+        <a href="/book/new" class="btn btn-info">Add new book</a>
+    </section>
+    
+</main>   

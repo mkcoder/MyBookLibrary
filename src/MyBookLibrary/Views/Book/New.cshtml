@@ -1,0 +1,16 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MyBookLibrary.Models.Book
+@{    
+}
+
+<div class="container">
+    Enter the isbn # below and we will fetch the book by that author/isbn
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+        <label for="query">Query</label>
+        <input type="text" name="query" class="js-seach-query-input"/>
+        <div id="js-user-id" data-user_id="@ViewBag._userId"></div>
+        <button type="submit" class="btn btn-primary js-search-query">Search</button>        
+    }
+    <div id="js-app-book-display"></div>
+</div>
