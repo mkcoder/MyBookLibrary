@@ -27,14 +27,14 @@ namespace MyBookLibrary.Controllers
         // GET: Notes/Details/5
         public async Task<IActionResult> Details(String id)
         {
-            var note = await _context.Notes.SingleOrDefaultAsync(m => m.Isbn == id);
-            ViewData["books"] = _context.Books.Where(b => b.Isbn == id).ToList();
-
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var note = _context.Notes.Where(m => m.Isbn == id && m.UserName == userId).ToList();
+            ViewData["books"] = _context.Books.SingleOrDefault(b => b.Isbn == id && b.UserId == userId);
             return View(note);
         }
 
         // GET: Notes/Create
-        public IActionResult Create(String isbn)
+        public IActionResult Create(String isbn, String UserName)
         {
             return View();
         }
@@ -50,7 +50,7 @@ namespace MyBookLibrary.Controllers
             {
                 _context.Add(note);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", routeValues: new {id= note.Isbn});
             }
             return View(note);
         }
@@ -101,7 +101,7 @@ namespace MyBookLibrary.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", routeValues: new { id = note.Isbn });
             }
             return View(note);
         }

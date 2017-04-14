@@ -8,7 +8,7 @@
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Notess</h4>
+        <h4>Notes</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -19,13 +19,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="PageNote" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="PageNote" class="form-control" />
-                <span asp-validation-for="PageNote" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
             <label asp-for="PageNumber" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="PageNumber" class="form-control" />
@@ -33,10 +26,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <label asp-for="PageNote" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="PageNote" class="form-control" ></textarea>
+                <span asp-validation-for="PageNote" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-md-10">
                 <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
@@ -48,7 +46,7 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
 </div>
 
 @section Scripts {

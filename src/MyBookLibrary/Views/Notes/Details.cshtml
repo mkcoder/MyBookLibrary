@@ -1,47 +1,49 @@
-@model MyBookLibrary.Models.Note
+@model List<Note>
 
 @{
     ViewData["Title"] = "Details";
-    List<Book> books = (List<Book>) ViewData["books"];
+    Book book = (Book)ViewData["books"];
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Notes on book </h4>
-    <a asp-controller="Notes" asp-action="Create" >Add new note</a>
-    @foreach (var book in books)
-    {
-        @book.Isbn
-    }
+    <a href="/" class="btn btn-info">Back to library</a>
+    <a class="btn btn-success" asp-controller="Notes" asp-action="Create" asp-route-isbn="@book.Isbn" asp-route-UserName="@book.UserId">Add new note</a>
+    
     <hr />
     @if (Model != null)
     {
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Isbn)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Isbn)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.PageNote)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.PageNote)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.PageNumber)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.PageNumber)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
-        </dl>
-   }
+        foreach (var note in Model)
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => note.Isbn)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => note.Isbn)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => note.PageNote)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => note.PageNote)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => note.PageNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => note.PageNumber)
+                </dd>
+                <dt>                    
+                </dt>
+                <dd>
+                    <div class="btn-group">
+                        <a asp-action="Edit" asp-route-id="@note.NoteID" class="btn btn-info">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@note.NoteID" class="btn btn-danger">Delete</a>                        
+                    </div>
+                </dd>
+            </dl>
+        }
+    }
 </div>

@@ -18,13 +18,21 @@
         padding-left: 10px;
         padding-right: 10px;
     }
+
+    .library .delete-btn {
+        display: none;
+    }
+    .library:hover .delete-btn {
+        display: block;
+    }
 </style>
 <main class="container-fluid">
     <div class="book-gallery dragscroll">
     @foreach (Book book in Model)
     {
         <div class="library">
-            <a class="js-data-modal-load" data-toggle="modal" data-target="#bookModal" data-isbn="@book.Isbn"><img src="@book.Image" class="library-gallery-book-display" /></a>                        
+            <a class="js-data-modal-load" data-toggle="modal" data-target="#bookModal" data-isbn="@book.Isbn" data-bookId="@book.BookID"><img src="@book.Image" class="library-gallery-book-display" /></a>                        
+            <a class="btn btn-danger delete-btn" asp-action="Delete" asp-controller="Book" asp-route-id="@book.BookID">Delete</a>
         </div>
     }
     <div class="modal fade" id="bookModal" role="dialog">
@@ -38,9 +46,9 @@
                 <div class="modal-body">
                     <p>Some text in the modal.</p>
                 </div>
-                <div class="modal-footer">
-                    <a asp-area="" asp-controller="Notes" asp-action="Index" type="button" class="btn btn-default more-info">Notes</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="modal-footer btn-group">
+                    <a asp-area="" asp-controller="Notes" asp-action="Index" type="button" class="btn btn-warning more-info">Notes</a>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

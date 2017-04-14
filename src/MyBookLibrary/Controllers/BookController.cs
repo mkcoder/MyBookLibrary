@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyBookLibrary.Data;
 using MyBookLibrary.Models;
 using Newtonsoft.Json.Linq;
@@ -43,16 +44,37 @@ namespace MyBookLibrary.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public void New([FromBody]List<Book> books)
+        public IActionResult New([FromBody]List<Book> books)
         {
             foreach (var book in books)
-            {                
-                if (model.Books.Select(b => b.Isbn == book.Isbn && b.UserId == book.UserId).ToList().Count == 0)
+            {
+                var databaseBook = model.Books.SingleOrDefault(b => b.Isbn == book.Isbn && b.UserId == book.UserId);
+                if (databaseBook == null)
                     model.Books.Add(book);                
             }
 
             model.SaveChanges();
-            Response.Redirect("/");
+            return RedirectToAction("Index", "Home");
         }
+
+        // GET: Book/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var note = await model.Books.SingleOrDefaultAsync(m => m.BookID == id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            model.Books.Remove(note);
+            await model.SaveChangesAsync();
+            return RedirectToAction("index", "Home");
+        }
+
     }
 }

@@ -3,68 +3,77 @@
         '.js-search-query',
         function(e) {
             let query = $('.js-seach-query-input').val();
+            let startIndex = $(this).data('start_index');
+            if (startIndex !== undefined) {
+                query += "&startIndex=" + startIndex;
+            } 
             window.fetch('https://www.googleapis.com/books/v1/volumes?q=' + query + "&maxResults=40&")
                 .then(response => response.text())
                 .then(text => JSON.parse(text))
                 .then(data => {
-                    let result = `
-                                    
-                                    <table class ="table table-responsive table-striped table-hover js-multi-insert">
-                                    <form>
-                                        <thead>
-                                           <tr>
-                                                <th>Add to bookshelf</th>
-                                                <th>Image</th>
-                                                <th>Isbn</th>
-                                                <th>Title</th>
-                                                <th>Author</th>
-                                           </tr>
-                                        </thead>
-                                        <tbody>`;
-                        console.log(data);
-                        for (let item of data.items) {
-                            let author = item.volumeInfo.authors,                                
-                                title = item.volumeInfo.title,
-                                isbn, image;
-                            if ( item.volumeInfo.industryIdentifiers !== undefined )
-                                if (item.volumeInfo.industryIdentifiers.length > 1)
-                                    isbn = item.volumeInfo.industryIdentifiers[1].identifier;
-                                else
-                                    isbn = item.volumeInfo.industryIdentifiers[0].identifier;
-                            if (item.volumeInfo.imageLinks !== undefined)
-                                image = item.volumeInfo.imageLinks.thumbnail;
-                            else
-                                image = "~/wwwroot/images/no-image.jpg";
-                            result += `
-                                <tr>
-                                    <input type="hidden" name="isbn" value="${isbn}"/>
-                                    <input type="hidden" name="author" value="${author}"/>
-                                    <input type="hidden" name="HaveRead" value="${false}"/>
-                                    <input type="hidden" name="image" value="${image}" />
-                                    <td><input type="checkbox" name="addToBookShelf" />
-                                    <td><img src="${image}" /></td>
-                                    <td>${isbn}</td>
-                                    <td>${title}</td>
-                                    <td>${author}</td>
-                                </tr>
-                            `;
-                        }
-                        result += `
-                        </tbody>
-                        </form>
-                        </table>
-                        <button class="btn btn-block btn-success js-btn-submit">Submit</button>
-                        `;
-                        console.log(result);
-                        $('#js-app-book-display').innerHTML = "";
-                        $('#js-app-book-display').append(result);
+                        debugger;
+                    let table = window.getTableFromResult(data);
+                    console.log(table);
+                        $('#js-app-book-display').html("");
+                        $('#js-app-book-display').append(table);
                     }
                 );
 
             e.preventDefault();
             return false;
         });
-
+    window.getTableFromResult = function (data) {
+        let result = `<table class ="table table-responsive table-striped table-hover js-multi-insert">
+                    <form>
+                        <thead>
+                            <tr>
+                                <th>Add to bookshelf</th>
+                                <th>Image</th>
+                                <th>Isbn</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                            console.log(data);
+                            for (let item of data.items) {
+                            let author = item.volumeInfo.authors,
+                            title = item.volumeInfo.title,
+                            isbn, image;
+                            if (item.volumeInfo.industryIdentifiers !== undefined)
+                            if (item.volumeInfo.industryIdentifiers.length > 1)
+                                isbn = item.volumeInfo.industryIdentifiers[1].identifier;
+                            else
+                                isbn = item.volumeInfo.industryIdentifiers[0].identifier;
+                            if (item.volumeInfo.imageLinks !== undefined)
+                            image = item.volumeInfo.imageLinks.thumbnail;
+                            else
+                                image = "~/wwwroot/images/no-image.jpg";
+                            result += `
+                                            <tr>
+                                                <input type="hidden" name="isbn" value="${isbn}"/>
+                                                <input type="hidden" name="author" value="${author}"/>
+                                                <input type="hidden" name="HaveRead" value="${false}"/>
+                                                <input type="hidden" name="image" value="${image}" />
+                                                <td><input type="checkbox" name="addToBookShelf" />
+                                                <td><img src="${image}" /></td>
+                                                <td>${isbn}</td>
+                                                <td>${title}</td>
+                                                <td>${author}</td>
+                                            </tr>
+                                        `;
+                            }
+        result += `</tbody>
+                    </form>
+                    </table>
+                    <ul class ="pagination">`;
+                   for (let page = 40, index = 0; page < data.totalItems; page += 40, index++) {
+                       result += `<li><a href='' data-start_index=${page} class='js-start-index js-search-query'>${index}</a></li>`;
+                   }
+        result +=  `</ul>
+                    <a href="/" class="btn btn-block btn-success js-btn-submit">Submit</a>`;
+        return result;
+    }
     $('body').on('click', '.js-btn-submit',
         function (e) {
             console.log($('form.js-multi-insert').serialize());
@@ -101,11 +110,6 @@
                 },
                 body: JSON.stringify(json.books)
         }).then(res => console.log(res));
-
-            console.log(json);
-            console.log(JSON.stringify(json.books));
-            e.preventDefault();
-            return false;
         });
     $('body').on('click',
         '.js-data-modal-load',
@@ -126,10 +130,7 @@
                     bookModal.find('.modal-title').text(data.volumeInfo.title + " Written by: " + data.volumeInfo.authors.join(","));
                     bookModal.find('.modal-body').text(data.volumeInfo.description);
                     bookModal.find('.more-info').attr('href', "/notes/Details/" + query);
+                    bookModal.find('.js-delete').attr('href', "/notes/Details/" + query);
                 });
         });
-    $('body').on('click', '.more-info', function (e) {
-        console.log($(this).attr('href'));
-        window.target = $(this).attr('href');
-    })
 })(jQuery);
