@@ -43,16 +43,16 @@ namespace MyBookLibrary.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult New([FromBody]List<Book> books)
+        public void New([FromBody]List<Book> books)
         {
-
             foreach (var book in books)
             {                
-                model.Books.Add(book);                
+                if (model.Books.Select(b => b.Isbn == book.Isbn && b.UserId == book.UserId).ToList().Count == 0)
+                    model.Books.Add(book);                
             }
 
             model.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            Response.Redirect("/");
         }
     }
 }

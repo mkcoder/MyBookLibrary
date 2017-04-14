@@ -11,7 +11,6 @@
         vertical-align: middle;
         display: flex;
         align-content: center;
-        justify-content: space-around;
         overflow-x: hidden;
     }
     .library {    
@@ -40,7 +39,7 @@
                     <p>Some text in the modal.</p>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" target="_blank" type="button" class="btn btn-default more-info" data-dismiss="modal">More info</a>
+                    <a asp-area="" asp-controller="Notes" asp-action="Index" type="button" class="btn btn-default more-info">Notes</a>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

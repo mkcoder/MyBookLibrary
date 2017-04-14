@@ -125,8 +125,11 @@
                     var bookModal = $('#bookModal');
                     bookModal.find('.modal-title').text(data.volumeInfo.title + " Written by: " + data.volumeInfo.authors.join(","));
                     bookModal.find('.modal-body').text(data.volumeInfo.description);
-                    bookModal.find('.more-info').attr('href', data.volumeInfo.infoLink);
+                    bookModal.find('.more-info').attr('href', "/notes/Details/" + query);
                 });
-
         });
+    $('body').on('click', '.more-info', function (e) {
+        console.log($(this).attr('href'));
+        window.target = $(this).attr('href');
+    })
 })(jQuery);

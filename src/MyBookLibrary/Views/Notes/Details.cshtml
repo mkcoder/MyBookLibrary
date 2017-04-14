@@ -1,0 +1,47 @@
+@model MyBookLibrary.Models.Note
+
+@{
+    ViewData["Title"] = "Details";
+    List<Book> books = (List<Book>) ViewData["books"];
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Notes on book </h4>
+    <a asp-controller="Notes" asp-action="Create" >Add new note</a>
+    @foreach (var book in books)
+    {
+        @book.Isbn
+    }
+    <hr />
+    @if (Model != null)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Isbn)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PageNote)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PageNote)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PageNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PageNumber)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.UserName)
+            </dd>
+        </dl>
+   }
+</div>
