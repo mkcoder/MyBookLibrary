@@ -3,17 +3,19 @@
 @{    
 }
 
-<div class="container container-fluid">
-    Enter the isbn # below and we will fetch the book by that author/isbn
-    <form class="form-inline center-block" method="post">
-        <label class="sr-only query" for="query">Query</label>
-        <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-            <div class="input-group-addon">Query</div>
-            <input type="text" class="form-control js-seach-query-input" id="query" placeholder="query">
-            <span id="js-user-id" data-user_id="@ViewBag._userId"></span>
-        </div>
+<div class="container container-fluid">    
+    <div class="jumbotron">
+        <h1>Enter the isbn # below and we will fetch the book by that author/isbn</h1>
+        <form class="form-inline center-block" method="post">
+            <label class="sr-only query" for="query">Query</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                <div class="input-group-addon">Query</div>
+                <input type="text" class="form-control js-seach-query-input" id="query" placeholder="query">
+                <span id="js-user-id" data-user_id="@ViewBag._userId"></span>
+            </div>
 
-        <button type="submit" class="btn btn-primary js-search-query">Search</button>
-    </form>
+            <button type="submit" class="btn btn-primary js-search-query">Search</button>
+        </form>
+    </div>
     <div id="js-app-book-display"></div>
 </div>

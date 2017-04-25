@@ -54,7 +54,7 @@ namespace MyBookLibrary.Controllers
             }
 
             model.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return Json(Url.Action("Index", "Home"));
         }
 
         // GET: Book/Delete/5

@@ -71,7 +71,7 @@
                        result += `<li><a href='' data-start_index=${page} class='js-start-index js-search-query'>${index}</a></li>`;
                    }
         result +=  `</ul>
-                    <a href="/" class="btn btn-block btn-success js-btn-submit">Submit</a>`;
+                    <a class="btn btn-block btn-success js-btn-submit">Submit</a>`;
         return result;
     }
     $('body').on('click', '.js-btn-submit',
@@ -102,14 +102,18 @@
             }
             console.log('posting the following to the server', JSON.stringify({ books: json.books, userId: $('#js-user-id').data('user_id') }));
             fetch("/book/new",
-            {
-                method: "POST",
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(json.books)
-        }).then(res => console.log(res));
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(json.books)
+                }).then(res => res.text())
+                .then(text => JSON.parse(text))
+                .then(json => {
+                    window.location.href = json;
+                });
         });
     $('body').on('click',
         '.js-data-modal-load',
